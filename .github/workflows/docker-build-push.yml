@@ -1,13 +1,11 @@
 name: Docker Build and Push
 
 on:
-  pull_request: 
   workflow_dispatch:
   push:
     paths:
       - 'src/**'
       - '.github/workflows/docker-build-push.yml'
-      - '.github/workflows/api-tests.yml'
   release:
     types: [published]
 

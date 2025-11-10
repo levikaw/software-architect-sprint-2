@@ -39,7 +39,7 @@ const argv = yargs(hideBin(process.argv))
     alias: 't',
     description: 'Request timeout in ms',
     type: 'number',
-    default: 10000
+    default: 20000
   })
   .help()
   .alias('help', 'h')

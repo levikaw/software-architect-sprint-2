@@ -1,0 +1,44 @@
+@startuml
+!define C4P https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master
+!include C4P/C4_Context.puml
+!include C4P/C4_Container.puml
+!include C4P/C4_Component.puml
+
+
+'ComponentDb(db, "Database", "PostgreSQL", "Store users, homes and equipments")
+
+Container_Boundary(APP, "APP") {
+Component(events, "Events, Logs and Reports", "Go", "Log critical queue data, transform data to reports, event orchestration")
+Component(auth, "Sign In Controller", "Go", "Create, check, save and dispatch access keys")
+Component(user, "User Manager", "Go", "Sign Up user, update and dispatch user data, changing password, controls subscriptions")
+
+Component(gate, "API Gateway", "", "")
+Component(meta, "Movies Metadata", "Go", "метаданные о фильмах")
+Component(movies, "Movies", "Go", "Стриминговый сервис видео")
+Component(payments, "Payments", "Go", "Сервис обработки платежей")
+ComponentQueue(kafka, "kafka", "", "")
+}
+
+Component(outsidePayment, "Платежная система", "", "")
+
+BiRel_U(gate, auth, "")
+BiRel_U(gate, user, "")
+BiRel_U(gate, movies, "")
+BiRel_U(gate, meta, "")
+BiRel_U(gate, payments, "")
+
+BiRel(kafka, auth, "")
+BiRel(kafka, user, "")
+BiRel(kafka, movies, "")
+BiRel(kafka, meta, "")
+BiRel(kafka, payments, "")
+
+BiRel(kafka, events, "")
+
+Rel(payments, outsidePayment, "")
+
+
+Person(customer, "Customer")
+
+Rel(customer, gate, "")
+@enduml
